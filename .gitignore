@@ -1,2 +1,8 @@
+<<<<<<< HEAD
 /secrets.txt
 /node_modules
+=======
+/secrets.js
+/secrets.txt
+node_modules
+>>>>>>> dd13a1dbd799aaaa3d23ca68aef6c82d120817db
