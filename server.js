@@ -14,6 +14,6 @@ var server = app.listen(port, function() {
   console.log('listening on port 3000');
 })
  
-// tweetHandler.getMentions();
-tweetHandler.replyToMentions();
+tweetHandler.getMentions();
+// tweetHandler.replyToMentions();
 

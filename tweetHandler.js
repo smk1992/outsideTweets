@@ -1,4 +1,5 @@
 var twit = require('twit');
+var wit = require('./wit');
 
 var consumer_key = require('./secrets.js').consumer_key;
 var consumer_secret = require('./secrets.js').consumer_secret;
@@ -23,43 +24,39 @@ module.exports = {
     t.get('/statuses/mentions_timeline', { since_id: since_id }, function(err, data, response){  
       // console.log(data)
       if (data.length > 0) {
-        var currentTweet = data[i];
         for(var i = data.length - 1; i >= 0; i--) {
-          console.log(data[i].id)
+          var currentTweet = data[i];
+          // console.log(data[i].id)
           if (i === data.length - 1) {
             since_id = currentTweet.id + 1;
           }
           //This if statement determines whether we have already handled this specific tweet
-          var tweetObj = currentTweet.user;
-          module.exports.replyToMentions(tweetObj)
+          var currentMention = {};
+          currentMention.text = currentTweet.text.replace('@outside_tweets', '');
+          currentMention.screen_name = currentTweet.user.screen_name;
+          module.exports.replyToMentions(currentMention);
         }
       }
     });
   },
 
-  replyToMentions: function(tweetObj){  
-    // for(var i = 0; i < latestMentions.length; i++){
-    //   var currentMention = latestMentions[i];
-    //   //responseTweet is the string we will send to twitter to tweet for us
-    //   var responseTweet = 'Hello @';
-    //   responseTweet += currentMention.user;
-    //   responseTweet += '\nI hope you are having a wonderful day! \n-Your Favorite Node Server';
+  replyToMentions: function(currentMention){
 
-    //   //twit will now post this responseTweet to twitter. This function takes a string and a callback
-    //   t.post('statuses/update', { status: responseTweet }, function(err, data, response){
-    //     console.log('posted');
-    //   });
-    // }
+    wit.getWitForMessage(currentMention, function(witResponse) {
 
-    var to = '@' + 'AlbreyPreston' + ':';
-    var responseText = 'yo sup brah';
+      var responseMsg = '@' + currentMention.screen_name + ": ";
+      
+      if (witResponse.intent === 'artist_performs'){
+        // console.log(witResponse);
+        responseMsg += 'Heya!!';
+        // t.post('statuses/update', {status: responseMsg}, function(err){
+        //   console.log(err);
+        // });
+      }
 
-    var tweet = to + ' ' + responseText;
-
-    t.post('statuses/update', { status: tweet }, function(err, data, response){
-      console.log(err)
-      console.log('tweeted');
     });
+
   }
+
 
 };

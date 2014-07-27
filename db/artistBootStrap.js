@@ -2,7 +2,6 @@ var http = require('http');
 
 var Artist = require('./artists.js');
 
-var daySchedules = [JSON.parse(scheduleStrFri), JSON.parse(scheduleStrSat), JSON.parse(scheduleStrSun)]; 
 
 var processArtist = function (data) {
   Artist.findOne({ 'artist' : data.artist } , function (err, found) {
