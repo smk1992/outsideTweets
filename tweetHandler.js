@@ -61,7 +61,9 @@ module.exports = {
                 var from = results[i].performs[j].from;
                 var to = results[i].performs[j].to;
                 var stage = results[i].performs[j].stage;
-
+                var date = new Date(results[i].perfomrs[j].date);                
+                
+                
                 responseMsg += 'YO, ' + artist + ' is playing on ' + stage + 
                                             ' from ' + from + ' - ' + to;               
                 t.post('statuses/update', {status: responseMsg}, function(err){
