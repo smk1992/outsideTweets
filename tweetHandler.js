@@ -1,5 +1,5 @@
 var twit = require('twit');
-var wit = require('wit');
+var wit = require('./wit');
 
 var consumer_key = require('./secrets.js').consumer_key;
 var consumer_secret = require('./secrets.js').consumer_secret;
@@ -26,30 +26,37 @@ module.exports = {
       if (data.length > 0) {
         for(var i = data.length - 1; i >= 0; i--) {
           var currentTweet = data[i];
-          console.log(data[i].id)
+          // console.log(data[i].id)
           if (i === data.length - 1) {
             since_id = currentTweet.id + 1;
           }
           //This if statement determines whether we have already handled this specific tweet
-          var tweetObj = {};
-          tweetObj.text = currentTweet.text;
-          tweetObj.screen_name = currentTweet.user.screen_name;
+          var currentMention = {};
+          currentMention.text = currentTweet.text.replace('@outside_tweets', '');
+          currentMention.screen_name = currentTweet.user.screen_name;
+          module.exports.replyToMentions(currentMention);
         }
       }
     });
   },
 
-  replyToMentions: function(tweetObj){  
+  replyToMentions: function(currentMention){
 
-    var to = '@' + tweetObj.screen_name + ':';
-    var responseText = 'yo sup brah';
+    wit.getWitForMessage(currentMention, function(witResponse) {
 
-    var tweet = to + ' ' + responseText;
+      var responseMsg = '@' + currentMention.screen_name + ": ";
+      
+      if (witResponse.intent === 'artist_performs'){
+        // console.log(witResponse);
+        responseMsg += 'Heya!!';
+        // t.post('statuses/update', {status: responseMsg}, function(err){
+        //   console.log(err);
+        // });
+      }
 
-    t.post('statuses/update', { status: tweet }, function(err, data, response){
-      console.log(err)
-      console.log('tweeted');
     });
+
   }
+
 
 };
