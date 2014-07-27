@@ -98,12 +98,12 @@ function accumulateStages(artist, accum) {
     var time = show.time.split('-');
     var from = time[0].trim();
     var to = time[1].trim();
-          
+
     stage.lineup.push({
       'artist' : artist.artist,
       'date' : show.date,
-      'from' : show.from,
-      'to' : show.to
+      'from' : from,
+      'to' : to
     });
   }
 }

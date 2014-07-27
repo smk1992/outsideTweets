@@ -1,4 +1,5 @@
 var Artist = require('./db/artists.js');
+var Stage = require('./db/stages.js');
 
 var helper = {};
 
@@ -12,6 +13,19 @@ helper.getArtistPerforms = function (filter, callback) {
 
     if (results) {
       callback(results); 
+    }
+  });
+};
+
+helper.getStagePerformer = function (filter, callback) {
+  Stage.findOne(filter, function (err, stage) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    
+    if (stage) {
+      callback(stage); 
     }
   });
 };
