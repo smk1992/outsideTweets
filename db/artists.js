@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var ArtistSchema = new Schema({  
     artist : String,
-    performs : [{data: String, from:String, to:String, stage:String}]    
+    performs : [{date: String, from:String, to:String, stage:String}]    
 });
 
 
