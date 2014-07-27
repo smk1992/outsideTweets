@@ -23,9 +23,9 @@ var wit = {
       if (error) {
         console.log("Error getting Wit: " + error);
       } else {
+        body = JSON.parse(body);        
 
-        body = JSON.parse(body);
-        console.log(body._text, body['outcomes'][0]['entities']);
+        console.log(body);
         callback({
           message: message, 
           intent: body["outcomes"][0]["intent"], 
