@@ -16,14 +16,16 @@ var twit = new Twit({
 
 // create stream to get searches 
 var sanFrancisco = [ '-122.75', '36.8', '-121.75', '37.8' ];
-var keywords = ['outsidelands is','outsideland','outsidelands'];
-var stream = twit.stream('statuses/filter', { track : keywords.join() }); // , locations: sanFrancisco});
+var keywords = ['outsidelands is','outsideland','outsidelands', 'kanye'];
 console.log('listing for outside land');
+var stream = twit.stream('statuses/filter', { track : keywords.join(), locations: sanFrancisco});
 
 var once = 0;
 stream.on('tweet', function (tweet) {
+
   if (once < 50) {
-    console.log('found tweet:', tweet.text, tweet.created_at);
+    var result = analyzeTweet(tweet);
+    console.log('found tweet:', result);
     once++;
   }
 });
@@ -31,7 +33,15 @@ stream.on('tweet', function (tweet) {
 
 
 // Anaylyzing/Processing those tweets and and generating obj with tweets and score
-
+var analyzeTweet = function (tweet) {
+  var score = sentiment(tweet.text);
+  return {
+    'tweet': tweet.text,
+    'score' : score.score,
+    'createdAt' : tweet.created_at,
+    'user' : tweet.user.id
+  };
+}
 
 
 // Design A way to Store those tweets.
