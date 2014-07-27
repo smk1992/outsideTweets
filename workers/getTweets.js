@@ -15,10 +15,11 @@ var twit = new Twit({
 });
 
 // create stream to get searches 
-var sanFrancisco = [ '-122.75', '36.8', '-121.75', '37.8' ];
-var keywords = ['outsidelands is','outsideland','outsidelands', 'kanye'];
+//var sanFrancisco = [ '-122.75', '36.8', '-121.75', '37.8' ];
+//var keywords = ['outsidelands is','outsideland','outsidelands', 'kanye'];
+var keywords = ['brad pitt'];
 console.log('listing for outside land');
-var stream = twit.stream('statuses/filter', { track : keywords.join(), locations: sanFrancisco});
+var stream = twit.stream('statuses/filter', { track : keywords.join() }); //, locations: sanFrancisco});
 
 var once = 0;
 stream.on('tweet', function (tweet) {
