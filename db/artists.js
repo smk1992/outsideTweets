@@ -1,11 +1,10 @@
 var mongoose = require('./config');
 
-var Schema = mongoose.Schema;
+var Schema = mongoose.Schema;    
 
-var ArtistSchema = new Schema({
-    id: ObjectId,
+var ArtistSchema = new Schema({  
     artist : String,
-    performs : [{from:String, to:String, stage:String}]    
+    performs : [{data: String, from:String, to:String, stage:String}]    
 });
 
 

@@ -14,46 +14,53 @@ var scheduleStrSun = '[{"stage":"Lands End","schedule":{"Imelda May":"12:30 - 1:
 
 var daySchedules = [JSON.parse(scheduleStrFri), JSON.parse(scheduleStrSat), JSON.parse(scheduleStrSun)]; 
 
-var processDay = function (day) {
-  var stageData = {};
-  for (var i = 0; i < day.length; i++) {
-    stageData = day[i];
-    var stage = stageData.stage;
-    var schedule = stageData.schedule;
-    for (var artist in schedule) {
-      Artist.findOne({ 'artist' : artist } , function (err, found) {
-        if (err) {
-          console.log(err);
-          return;
-        }
-
-        if (!found) {
-          var time = schedule[artist].split('-');          
-          var from = time[0].trim();
-          var to = time[1].trim();
-          
-          Artist.create({
-            artist: aritst,
-            performs [{ from: from, to : to, stage: stage}]
-          });
-        } else {
-          var time = schedule[artist].split('-');          
-          var from = time[0].trim();
-          var to = time[1].trim();
-
-          found.performs.push({
-            from :  
-          });
-
-        }
-
-      });
+var processArtist = function (data) {
+  Artist.findOne({ 'artist' : data.artist } , function (err, found) {
+    if (err) {
+      console.log(err);
+      return;
     }
-  }
+
+    if (!found) {
+      var performs = [];
+      for (var i = 0; i < data.shows.length; i++) {
+        var show = data.shows[i];  
+        var time = show.time.split('-');
+        var from = time[0].trim();
+        var to = time[1].trim();
+
+        performs.push({
+          'date' : show.date,
+          'to' : to,
+          'from' : from,
+          'stage' : show.stage
+        });
+      }
+
+      Artist.create({
+        'artist': data.artist,
+        'performs' : performs
+      });
+      console.log('created');
+    } else {
+      console.log("found", found);
+    }
+  });
 };
 
 http.get('http://static.echonest.com/OutsideLands/lineup_2014.json', function (res) {
-  console.log("got reply", res.statusCode, res.body);
-}).on('error', function (e) {
-  console.log('Got error:' e.message);
-};
+  var data = '';  
+  res.on('data', function (chunk) {
+    data += chunk;
+  });
+
+  res.on('end', function () {    
+    var artists = JSON.parse(data);    
+    for (var i = 0; i < artists.length; i++) {      
+      processArtist(artists[i]);     
+    }    
+  });
+
+}).on('error', function (error) {
+  console.log('Got error:', error.message);
+});
