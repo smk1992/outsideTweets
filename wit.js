@@ -4,6 +4,10 @@ var witAuth = require('./secrets.js').wit_auth;
 
 var wit = {
   getWitForMessage: function(message, callback) {
+    // remove invalid messages
+    if (!message.text.length) { 
+      return;
+    }
 
     var url = 'https://api.wit.ai/message?v=20140726&q=' + encodeURIComponent(message.text);
 
@@ -19,8 +23,9 @@ var wit = {
       if (error) {
         console.log("Error getting Wit: " + error);
       } else {
-        console.log(body);
+
         body = JSON.parse(body);
+        console.log(body._text, body['outcomes'][0]['entities']);
         callback({
           message: message, 
           intent: body["outcomes"][0]["intent"], 

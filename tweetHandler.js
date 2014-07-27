@@ -1,5 +1,6 @@
 var twit = require('twit');
 var wit = require('./wit');
+var helper = require('./helper.js');
 
 var consumer_key = require('./secrets.js').consumer_key;
 var consumer_secret = require('./secrets.js').consumer_secret;
@@ -42,21 +43,35 @@ module.exports = {
 
   replyToMentions: function(currentMention){
 
-    wit.getWitForMessage(currentMention, function(witResponse) {
-
-      var responseMsg = '@' + currentMention.screen_name + ": ";
-      
-      if (witResponse.intent === 'artist_performs'){
-        // console.log(witResponse);
-        responseMsg += 'Heya!!';
-        // t.post('statuses/update', {status: responseMsg}, function(err){
-        //   console.log(err);
-        // });
+    wit.getWitForMessage(currentMention, function(witResponse) {        
+      var responsePerson = '@' + currentMention.screen_name + ": ";            
+      var entities = witResponse.entities;
+      if (!entities.artist) {
+        return;
       }
+      
+      if (witResponse.intent === 'artist_performs') {
+        helper.getArtistPerforms({
+          'artist': entities.artist[0].value
+        }, function (results) {             
+            for (var i = 0; i < results.length; i++) {
+              var artist = results[i].artist;
+              for (var j = 0; j < results[i].performs.length; j++) {                
+                var responseMsg = responsePerson;            
+                var from = results[i].performs[j].from;
+                var to = results[i].performs[j].to;
+                var stage = results[i].performs[j].stage;
 
+                responseMsg += 'YO, ' + artist + ' is playing on ' + stage + 
+                                            ' from ' + from + ' - ' + to;               
+                t.post('statuses/update', {status: responseMsg}, function(err){
+                  console.log(err);
+                });          
+              }              
+            }
+          
+        });        
+      }
     });
-
   }
-
-
 };
