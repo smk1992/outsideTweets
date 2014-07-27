@@ -3,9 +3,6 @@ var http = require('http');
 var Artist = require('./artists.js');
 
 
-// Hard Data For Artist Schedule - Scraped Separately
-
-
 var processArtist = function (data) {
   Artist.findOne({ 'artist' : data.artist } , function (err, found) {
     if (err) {
