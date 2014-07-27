@@ -14,6 +14,12 @@ var twit = new Twit({
 });
 
 // create stream to get searches 
+// var stream = twit.stream('statuses/filter', { track : 'outside land' });
+
+// stream.on('tweet', function (tweet) {
+//   console.log('found tweet:', tweet);
+// });
+
 var stream = twit.stream('statuses/filter', { track : 'outside land' });
 
 stream.on('tweet', function (tweet) {
