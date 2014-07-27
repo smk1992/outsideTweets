@@ -18,7 +18,7 @@ var stream = twit.stream('statuses/filter', { track : 'outside land' });
 
 stream.on('tweet', function (tweet) {
   console.log('found tweet:', tweet);
-}
+});
 
 // Anaylyzing/Processing those tweets and and generating obj with tweets and score
 
