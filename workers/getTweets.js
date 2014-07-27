@@ -1,9 +1,9 @@
 var Twit = require('twit');
 
-var consumer_key = require('./secrets.js').consumer_key;
-var consumer_secret = require('./secrets.js').consumer_secret;
-var access_token = require('./secrets.js').access_token_key;
-var access_token_secret = require('./secrets.js').access_token_secret;
+var consumer_key = require('../secrets.js').consumer_key;
+var consumer_secret = require('../secrets.js').consumer_secret;
+var access_token = require('../secrets.js').access_token_key;
+var access_token_secret = require('../secrets.js').access_token_secret;
 
 
 var twit = new Twit({
