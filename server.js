@@ -13,10 +13,11 @@ var port = process.env.port || 3000;
 var server = app.listen(port, function() {
   console.log('listening on port 3000');
 })
- 
+
 setInterval(function () { 
   console.log("getting tweets:");
   tweetHandler.getMentions();
 }, 60000);
 
+tweetHandler.getMentions();
 

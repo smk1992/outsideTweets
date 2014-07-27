@@ -5,14 +5,23 @@ var helper = {};
 
 // get artist
 helper.getArtistPerforms = function (filter, callback) {
-  Artist.find(filter, function (err, results) {
+  Artist.find({}, function (err, results) {
     if (err) {
       console.log(err);
       return;
     }
+    
+    console.log(filter);
 
     if (results) {
-      callback(results); 
+      var newResult = [];
+      for (var i = 0; i < results.length; i++) {
+        var artist = results[i].artist.toLowerCase();
+        if (filter.artist.toLowerCase() === artist) {
+          newResult.push(results[i]);;
+        }
+      }
+      callback(newResult); 
     }
   });
 };
