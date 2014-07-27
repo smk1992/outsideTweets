@@ -15,5 +15,5 @@ var server = app.listen(port, function() {
 })
  
 // tweetHandler.getMentions();
-tweetHandler.replyToMentions();
+// tweetHandler.replyToMentions();
 
