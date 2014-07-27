@@ -1,4 +1,5 @@
 var Twit = require('twit');
+var sentiment = require('sentiment');
 
 var consumer_key = require('../secrets.js').consumer_key;
 var consumer_secret = require('../secrets.js').consumer_secret;
@@ -14,17 +15,20 @@ var twit = new Twit({
 });
 
 // create stream to get searches 
-// var stream = twit.stream('statuses/filter', { track : 'outside land' });
+var sanFrancisco = [ '-122.75', '36.8', '-121.75', '37.8' ];
+var keywords = ['outsidelands is','outsideland','outsidelands'];
+var stream = twit.stream('statuses/filter', { track : keywords.join() }); // , locations: sanFrancisco});
+console.log('listing for outside land');
 
-// stream.on('tweet', function (tweet) {
-//   console.log('found tweet:', tweet);
-// });
-
-var stream = twit.stream('statuses/filter', { track : 'outside land' });
-
+var once = 0;
 stream.on('tweet', function (tweet) {
-  console.log('found tweet:', tweet);
+  if (once < 50) {
+    console.log('found tweet:', tweet.text, tweet.created_at);
+    once++;
+  }
 });
+
+
 
 // Anaylyzing/Processing those tweets and and generating obj with tweets and score
 
